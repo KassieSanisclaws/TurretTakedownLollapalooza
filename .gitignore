@@ -1,0 +1,42 @@
+# Unreal Engine Git Ignore
+Saved/
+Intermediate/
+DerivedDataCache/
+.vscode/
+.vs/
+.idea/
+
+*.VC.db
+*.opensdf
+*.sdf
+*.suo
+*.tmp
+*.log
+*.user
+*.userprefs
+
+# Rider-specific
+.idea/
+*.ipr
+*.iws
+
+# Binary files
+*.exe
+*.dll
+*.lib
+*.app
+*.dylib
+*.pdb
+
+# Build folders
+Binaries/
+Build/
+
+# Crash Reports
+CrashReportClient/
+
+# Mac stuff
+.DS_Store
+
+# Ignore project-specific cache
+*.local
