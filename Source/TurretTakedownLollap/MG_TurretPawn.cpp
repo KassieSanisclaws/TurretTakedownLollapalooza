@@ -24,14 +24,14 @@ AMG_TurretPawn::AMG_TurretPawn()
 	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TurretMesh"));
 	TurretMesh->SetupAttachment(Root);
 
-	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
-	PawnSensingComp->SightRadius = 2000.f; // Set the sensing radius
-	PawnSensingComp->SetPeripheralVisionAngle(95.f); // Set the peripheral vision angle
-	PawnSensingComp->bSeePawns = true; // Enable seeing pawns
-	PawnSensingComp->bHearNoises = false; // Disable hearing noises
-	PawnSensingComp->bOnlySensePlayers = false; // Allow sensing all pawns, not just players
-	PawnSensingComp->SetAutoActivate(true); // Automatically activate the component
-	PawnSensingComp->PrimaryComponentTick.bCanEverTick = true; // Turning on ticking for Pawn Sensing Component
+	/*PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));*/
+	//PawnSensingComp->SightRadius = 2000.f; // Set the sensing radius
+	//PawnSensingComp->SetPeripheralVisionAngle(95.f); // Set the peripheral vision angle
+	//PawnSensingComp->bSeePawns = true; // Enable seeing pawns
+	//PawnSensingComp->bHearNoises = false; // Disable hearing noises
+	//PawnSensingComp->bOnlySensePlayers = false; // Allow sensing all pawns, not just players
+	//PawnSensingComp->SetAutoActivate(true); // Automatically activate the component
+	//PawnSensingComp->PrimaryComponentTick.bCanEverTick = true; // Turning on ticking for Pawn Sensing Component
 
 	
 
@@ -50,16 +50,16 @@ void AMG_TurretPawn::BeginPlay()
 
 	/*PawnSensingComp->Activate();*/ // Ensure the Pawn Sensing Component is active
 	// Bind the OnSeePawn event to our custom function
-	if (PawnSensingComp)
-	{
-		/*DrawDebugSphere(GetWorld(), GetActorLocation(), PawnSensingComp->SightRadius, 32, FColor::Red, true, 10.f);*/
-		UE_LOG(LogTemp, Warning, TEXT("PawnSensingComp found, binding delegate."));
-		PawnSensingComp->OnSeePawn.AddDynamic(this, &AMG_TurretPawn::OnPawnSeen);
-	}
-	else 
-	{
-		UE_LOG(LogTemp, Error, TEXT("PawnSensingComp is null! in BeginPlay"));
-	}
+	//if (PawnSensingComp)
+	//{
+	//	/*DrawDebugSphere(GetWorld(), GetActorLocation(), PawnSensingComp->SightRadius, 32, FColor::Red, true, 10.f);*/
+	//	UE_LOG(LogTemp, Warning, TEXT("PawnSensingComp found, binding delegate."));
+	//	PawnSensingComp->OnSeePawn.AddDynamic(this, &AMG_TurretPawn::OnPawnSeen);
+	//}
+	//else 
+	//{
+	//	UE_LOG(LogTemp, Error, TEXT("PawnSensingComp is null! in BeginPlay"));
+	//}
 }
 
 // Called every frame
