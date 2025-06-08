@@ -46,3 +46,28 @@ void ABasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ABasePawn::RotateTurret(FVector LookAtTarget)
+{
+	FVector TurretLocation = TurretMeshComp->GetComponentLocation();
+	// Make LookAtTarget the same height as the turret to avoid pitching up/down
+	FVector AdjustedTarget = FVector(LookAtTarget.X, LookAtTarget.Y, TurretLocation.Z);
+
+	// Direction from turret to target (on same Z plane)
+	FVector ToTarget = AdjustedTarget - TurretLocation;
+
+	// Convert to rotation
+	FRotator LookAtRotation = ToTarget.Rotation();
+
+	// Apply only yaw rotation (so turret doesn't tilt)
+	FRotator YawOnlyRotation(0.f, LookAtRotation.Yaw, 0.f);
+	TurretMeshComp->SetWorldRotation(YawOnlyRotation);
+
+	// Calculate the rotation needed to look at the target
+	//FVector ToTarget = LookAtTarget - TurretMeshComp->GetComponentLocation();
+	//FRotator LookAtRotation = ToTarget.Rotation();
+	//LookAtRotation.Pitch = 0.0f; // Keep the pitch at 0 to avoid tilting the turret up or down.
+	//LookAtRotation.Roll = 0.0f; // Keep the roll at 0 to avoid tilting the turret sideways.
+	// Set the turret's rotation
+	/*TurretMeshComp->SetWorldRotation(LookAtRotation);*/
+}
+
