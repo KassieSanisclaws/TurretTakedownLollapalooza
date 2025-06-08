@@ -21,6 +21,8 @@ protected:
 
 	void RotateTurret(FVector LookAtTarget);
 
+	void FireProjectile();
+
 private:
 	// Components for the pawn 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
@@ -31,7 +33,8 @@ private:
 	UStaticMeshComponent* TurretMeshComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	USceneComponent* ProjectileSpawnPointComp;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* TurretRotationRoot;
 
 public:	
 	// Called every frame

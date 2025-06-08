@@ -28,6 +28,13 @@ private:
 	class ATurretTakedownLollapCharacter* PlayerCharacter; // Pointer to the player character
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Combat" )
-	float FireRange = 1000.0f; // Range at which the turret can fire
-	float FireRate = 1.0f; // Rate at which the turret fires
+	float FireRange = 500.f; // Range at which the turret can fire
+	
+
+	FTimerHandle FireRateTimer;
+    float FireRate = 1.0f; // Time between shots in seconds
+	// Function to check fire conditions and fire if conditions are met
+	void CheckFireConditions();
+
+	bool InFiringRange();
 };

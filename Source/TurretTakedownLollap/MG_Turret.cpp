@@ -4,35 +4,37 @@
 #include "MG_Turret.h"
 #include "TurretTakedownLollapCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
 
 void AMG_Turret::Tick(float DeltaTime)
 {
-
 	Super::Tick(DeltaTime);
 
+	//// Find the distance to the character
+	//if (PlayerCharacter) 
+	//{
+	//	float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
 
-	// Find the distance to the character
-	if (PlayerCharacter) 
+	//	// Check to see if the turret can see the character
+	//	if (Distance <= FireRange)
+	//	{
+	//	  // If the turret can see the character, rotate towards it
+	//		RotateTurret(PlayerCharacter->GetActorLocation());
+	//	}
+	//}
+
+	if (InFiringRange())
 	{
-		float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
-
-		// Check to see if the turret can see the character
-		if (Distance <= FireRange)
-		{
-		  // If the turret can see the character, rotate towards it
-			RotateTurret(PlayerCharacter->GetActorLocation());
-		}
-
-		
-
-
+		RotateTurret(PlayerCharacter->GetActorLocation());
 	}
+
 }
 
 
 void AMG_Turret::BeginPlay() 
 {
 	Super::BeginPlay();
+
 
 	// Get the character
 	PlayerCharacter = Cast<ATurretTakedownLollapCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
@@ -46,5 +48,40 @@ void AMG_Turret::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Turret: Player character found!"));
 	}
 
+	// Initialize the turret's fire range
+	GetWorldTimerManager().SetTimer(FireRateTimer, this,  &AMG_Turret::CheckFireConditions, FireRate, true);
+}
 
+void AMG_Turret::CheckFireConditions()
+{
+ 	// Check if the turret can fire at the character
+	//if (PlayerCharacter)
+	//{
+	//	float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
+	//	if (Distance <= FireRange)
+	//	{
+	//		// If the turret can fire, call the FireTurret function
+	//		FireProjectile();
+	//	}
+	//}
+
+
+	if (InFiringRange())
+	{
+		FireProjectile();
+	}
+}
+
+
+bool AMG_Turret::InFiringRange()
+{
+	if (PlayerCharacter)
+	{
+	   float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
+	   if (Distance <= FireRange)
+	   {
+		   return true;
+	   }  
+	}
+	return false;
 }
