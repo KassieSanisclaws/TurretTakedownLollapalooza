@@ -80,6 +80,8 @@ bool AMG_Turret::InFiringRange()
 	   float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
 	   if (Distance <= FireRange)
 	   {
+		   UE_LOG(LogTemp, Warning, TEXT("Turret: SpawnPoint Location + Player character in Range! Fired Bullet"));
+
 		   return true;
 	   }  
 	}

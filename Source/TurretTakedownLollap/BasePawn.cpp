@@ -4,6 +4,9 @@
 #include "BasePawn.h"
 #include "Components/CapsuleComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Projectile.h"
+#include <Kismet/GameplayStatics.h>
+#include "GameFramework/Character.h" // Include this to resolve the incomplete type error for ACharacter
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -25,10 +28,13 @@ ABasePawn::ABasePawn()
 	// Attach turret mesh to the dummy root instead of directly to the BaseMesh directly:
 	TurretMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turret Mesh"));
 	TurretMeshComp->SetupAttachment(TurretRotationRoot);
-	TurretMeshComp->SetRelativeLocation(FVector(0.f, 0.f, 0.f)); // Adjust height if needed
+	TurretMeshComp->SetRelativeLocation(FVector(0.f, 3223.0f, 1441.0f)); // Adjust height if needed
 
 	ProjectileSpawnPointComp = CreateDefaultSubobject<USceneComponent>(TEXT("Projectile Spawn Point"));
 	ProjectileSpawnPointComp->SetupAttachment(TurretMeshComp);
+
+	// Set based on my meshes length and orientation:
+	ProjectileSpawnPointComp->SetRelativeLocation(FVector(100.f, 0.0f, 0.0f)); // Adjust the z if needed
 
 }
 
@@ -80,15 +86,17 @@ void ABasePawn::FireProjectile()
 {
 	// Get the spawn location of the projectile
 	FVector ProjectileSpawnLocation = ProjectileSpawnPointComp->GetComponentLocation();
+	// Get the player character to aim at
+	ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
-	DrawDebugSphere(
-		GetWorld(),
-		ProjectileSpawnLocation,
-		25.0f, // Radius of the sphere
-		12, // Number of segments
-		FColor::Green, // Color of the sphere
-		false, // Persistent
-		3.0f // Lifetime in seconds
-	);
+	FVector SpawnLoc = ProjectileSpawnPointComp->GetComponentLocation();
+	FVector TargetLoc = PlayerCharacter->GetActorLocation();
+	FVector ToTarget = (TargetLoc - SpawnLoc).GetSafeNormal();
+
+	FRotator FireRotation = ToTarget.Rotation();
+	// Spawn the projectile at the spawn location with the specified rotation by calling the GetWolrd which takes the actor of projectile class 
+	// as a type then in the parameters the UClass, then the spawn location and finally the rotation. 
+	GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnLocation, FireRotation);
+
 }
 
