@@ -32,12 +32,7 @@ AMG_TurretPawn::AMG_TurretPawn()
 	//PawnSensingComp->bOnlySensePlayers = false; // Allow sensing all pawns, not just players
 	//PawnSensingComp->SetAutoActivate(true); // Automatically activate the component
 	//PawnSensingComp->PrimaryComponentTick.bCanEverTick = true; // Turning on ticking for Pawn Sensing Component
-
 	
-
-	// Create and attach Pawn Sensing component to Root
-	
-	/*PawnSensingComp->SetupAttachment(Root);*/ // No need to attach to Root, it will be automatically attached to the RootComponent
 }
 
 // Called when the game starts or when spawned
@@ -83,11 +78,7 @@ void AMG_TurretPawn::OnPawnSeen(APawn* SeenPawn)
 	// DEBUG: Print to screen
 	UKismetSystemLibrary::PrintString(this, TEXT("Pawn Seen!"), true, true, FLinearColor::Red, 2.0f);
 	UE_LOG(LogTemp, Warning, TEXT("Pawn Seen: %s"), *SeenPawn->GetClass()->GetName());
-	/*UE_LOG(LogTemp, Warning, TEXT("Seen Pawn: %s"), *SeenPawn->GetName());*/
-
-	// Optional: Make sure it's the player or character
-	/*ACharacter* PlayerCharacter = Cast<ACharacter>(SeenPawn);
-	if (!PlayerCharacter) return;*/
+	UE_LOG(LogTemp, Warning, TEXT("Seen Pawn: %s"), *SeenPawn->GetName());
 
 	FVector TargetLocation = SeenPawn->GetActorLocation();
 	FVector OwnLocation = GetActorLocation();

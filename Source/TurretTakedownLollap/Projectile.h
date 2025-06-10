@@ -24,9 +24,13 @@ private:
 	UStaticMeshComponent* ProjectileMesh; // Mesh for the projectile
     UPROPERTY(VisibleAnywhere, Category = "Movement")
 	class UProjectileMovementComponent* ProjectileMovementComponent; // Movement component for the projectile	
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	FORCEINLINE class UProjectileMovementComponent* GetProjectileMovementComponent() const { return ProjectileMovementComponent; }
 
 };

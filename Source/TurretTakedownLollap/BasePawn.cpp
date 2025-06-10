@@ -7,6 +7,7 @@
 #include "Projectile.h"
 #include <Kismet/GameplayStatics.h>
 #include "GameFramework/Character.h" // Include this to resolve the incomplete type error for ACharacter
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -28,13 +29,10 @@ ABasePawn::ABasePawn()
 	// Attach turret mesh to the dummy root instead of directly to the BaseMesh directly:
 	TurretMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turret Mesh"));
 	TurretMeshComp->SetupAttachment(TurretRotationRoot);
-	TurretMeshComp->SetRelativeLocation(FVector(0.f, 3223.0f, 1441.0f)); // Adjust height if needed
+	//TurretMeshComp->SetRelativeLocation(FVector(0.f, 3223.0f, 1441.0f)); // Adjust height if needed
 
 	ProjectileSpawnPointComp = CreateDefaultSubobject<USceneComponent>(TEXT("Projectile Spawn Point"));
 	ProjectileSpawnPointComp->SetupAttachment(TurretMeshComp);
-
-	// Set based on my meshes length and orientation:
-	ProjectileSpawnPointComp->SetRelativeLocation(FVector(100.f, 0.0f, 0.0f)); // Adjust the z if needed
 
 }
 
@@ -69,34 +67,41 @@ void ABasePawn::RotateTurret(FVector LookAtTarget)
 	LookAtRotation.Yaw += -90.0f;
 	BaseMesh->SetWorldRotation(LookAtRotation);
 
-	// Draw debug to visualize aim direction
-	DrawDebugLine(
-		GetWorld(),
-		TurretMeshComp->GetComponentLocation(),
-		LookAtTarget,
-		FColor::Red,
-		false,
-		1.0f,
-		0,
-		2.0f
-	);
 }
 
 void ABasePawn::FireProjectile()
 {
-	// Get the spawn location of the projectile
+   // Get the spawn location of the projectile
 	FVector ProjectileSpawnLocation = ProjectileSpawnPointComp->GetComponentLocation();
-	// Get the player character to aim at
-	ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+   // Get the player character to aim at
+	ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);  
 
-	FVector SpawnLoc = ProjectileSpawnPointComp->GetComponentLocation();
 	FVector TargetLoc = PlayerCharacter->GetActorLocation();
-	FVector ToTarget = (TargetLoc - SpawnLoc).GetSafeNormal();
-
+	FVector ToTarget = (TargetLoc - ProjectileSpawnLocation).GetSafeNormal();
 	FRotator FireRotation = ToTarget.Rotation();
-	// Spawn the projectile at the spawn location with the specified rotation by calling the GetWolrd which takes the actor of projectile class 
-	// as a type then in the parameters the UClass, then the spawn location and finally the rotation. 
-	GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnLocation, FireRotation);
+
+	// SPawn the projectile at the spawn location with the specified rotation
+	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnLocation, FireRotation);
+	if (Projectile)
+	{
+	  // Set the projectile velocitry manually after spawning
+	     if (Projectile && Projectile->GetProjectileMovementComponent())
+		 {
+			 Projectile->GetProjectileMovementComponent()->Velocity = ToTarget * Projectile->GetProjectileMovementComponent()->InitialSpeed;
+		 }
+	}
+
+	// (Optional) Visual debug
+	DrawDebugLine(
+		GetWorld(), 
+		ProjectileSpawnLocation, 
+		TargetLoc, 
+		FColor::Turquoise, 
+		false, 
+		1.5f, 
+		0, 
+		2.f
+	);
 
 }
 

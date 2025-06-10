@@ -10,24 +10,23 @@ void AMG_Turret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//// Find the distance to the character
-	//if (PlayerCharacter) 
-	//{
-	//	float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
+   // Find the distance to the character
+	if (PlayerCharacter) 
+	{
+		float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
 
-	//	// Check to see if the turret can see the character
-	//	if (Distance <= FireRange)
-	//	{
-	//	  // If the turret can see the character, rotate towards it
-	//		RotateTurret(PlayerCharacter->GetActorLocation());
-	//	}
-	//}
+	// Check to see if the turret can see the character
+		if (Distance <= FireRange)
+		{
+		  // If the turret can see the character, rotate towards it
+			RotateTurret(PlayerCharacter->GetActorLocation());
+		}
+	}
 
 	if (InFiringRange())
 	{
 		RotateTurret(PlayerCharacter->GetActorLocation());
 	}
-
 }
 
 
@@ -55,16 +54,15 @@ void AMG_Turret::BeginPlay()
 void AMG_Turret::CheckFireConditions()
 {
  	// Check if the turret can fire at the character
-	//if (PlayerCharacter)
-	//{
-	//	float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
-	//	if (Distance <= FireRange)
-	//	{
-	//		// If the turret can fire, call the FireTurret function
-	//		FireProjectile();
-	//	}
-	//}
-
+	if (PlayerCharacter)
+	{
+		float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
+		if (Distance <= FireRange)
+		{
+			// If the turret can fire, call the FireTurret function
+			FireProjectile();
+		}
+	}
 
 	if (InFiringRange())
 	{
