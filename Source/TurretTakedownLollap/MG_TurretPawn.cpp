@@ -73,19 +73,6 @@ void AMG_TurretPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AMG_TurretPawn::OnPawnSeen(APawn* SeenPawn)
 {
-	if (!SeenPawn) return;
-
-	// DEBUG: Print to screen
-	UKismetSystemLibrary::PrintString(this, TEXT("Pawn Seen!"), true, true, FLinearColor::Red, 2.0f);
-	UE_LOG(LogTemp, Warning, TEXT("Pawn Seen: %s"), *SeenPawn->GetClass()->GetName());
-	UE_LOG(LogTemp, Warning, TEXT("Seen Pawn: %s"), *SeenPawn->GetName());
-
-	FVector TargetLocation = SeenPawn->GetActorLocation();
-	FVector OwnLocation = GetActorLocation();
-
-	FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(OwnLocation, TargetLocation);
-
-	// Apply only Yaw to rotate horizontally
-	SetActorRotation(FRotator(0.f, LookAtRotation.Yaw, 0.f));
+	
 }
 

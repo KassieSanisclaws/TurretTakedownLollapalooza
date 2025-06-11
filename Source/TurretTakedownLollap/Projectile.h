@@ -20,12 +20,21 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	// New Scene root for hierchy organization
+	UPROPERTY(VisibleAnywhere, Category = "Combat")
+	USceneComponent* RootScene; // Root component for the projectile
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UStaticMeshComponent* ProjectileMesh; // Mesh for the projectile
     UPROPERTY(VisibleAnywhere, Category = "Movement")
 	class UProjectileMovementComponent* ProjectileMovementComponent; // Movement component for the projectile	
 	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	void OnHit(
+		UPrimitiveComponent* HitComp, 
+		AActor* OtherActor, 
+		UPrimitiveComponent* OtherComp, 
+		FVector NormalImpulse, 
+		const FHitResult& Hit
+	);
 
 public:	
 	// Called every frame

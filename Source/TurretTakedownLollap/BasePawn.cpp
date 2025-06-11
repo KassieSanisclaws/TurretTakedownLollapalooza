@@ -59,7 +59,7 @@ void ABasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ABasePawn::RotateTurret(FVector LookAtTarget)
 {
-	FVector ToTarget = LookAtTarget - BaseMesh->GetComponentLocation();
+	FVector ToTarget = LookAtTarget - TurretRotationRoot->GetComponentLocation();
 	FRotator LookAtRotation = ToTarget.Rotation();
 	LookAtRotation.Roll = 0.0f; // Keep the roll at 0 to avoid tilting the turret sideways.
 	LookAtRotation.Pitch = 0.0f; // Keep the pitch at 0 to avoid tilting the turret up or down.
@@ -82,16 +82,15 @@ void ABasePawn::FireProjectile()
 
 	// SPawn the projectile at the spawn location with the specified rotation
 	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnLocation, FireRotation);
-	if (Projectile)
-	{
+	
+	if(Projectile && Projectile->GetProjectileMovementComponent()) {
 	  // Set the projectile velocitry manually after spawning
-	     if (Projectile && Projectile->GetProjectileMovementComponent())
-		 {
-			 Projectile->GetProjectileMovementComponent()->Velocity = ToTarget * Projectile->GetProjectileMovementComponent()->InitialSpeed;
-		 }
+		Projectile->GetProjectileMovementComponent()->Velocity = ToTarget * Projectile->GetProjectileMovementComponent()->InitialSpeed;
+
+		UE_LOG(LogTemp, Warning, TEXT("Projectile spawned successfully at location: %s"), *ProjectileSpawnLocation.ToString());
 	}
 
-	// (Optional) Visual debug
+	// Visual debug
 	DrawDebugLine(
 		GetWorld(), 
 		ProjectileSpawnLocation, 

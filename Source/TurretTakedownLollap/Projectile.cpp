@@ -10,19 +10,26 @@ AProjectile::AProjectile()
 {
 // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
   PrimaryActorTick.bCanEverTick = false;
-
+  // Create and set scene root
+  RootScene = CreateDefaultSubobject<USceneComponent>(TEXT("RootScene"));
+  SetRootComponent(RootScene);
   ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProjectileMesh"));
-  RootComponent = ProjectileMesh;
+  ProjectileMesh->SetupAttachment(RootScene);
+ /* ProjectileMesh->SetRelativeLocation(FVector::ZeroVector);*/
+
+  // Enable proper collision
+  ProjectileMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+  ProjectileMesh->SetCollisionProfileName(TEXT("BlockAllDynamic"));
+  ProjectileMesh->SetNotifyRigidBodyCollision(true);
 	
   ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
   ProjectileMovementComponent->MaxSpeed = 3000.0f; // Set the maximum speed of the projectile
   ProjectileMovementComponent->InitialSpeed = 3000.0f; // Set the initial speed of the projectile
-
   ProjectileMovementComponent->bRotationFollowsVelocity = true;  // Make the projectile rotate with its velocity
   ProjectileMovementComponent->bShouldBounce = false; // Disable bouncing for this projectile
 
  // Set the lifespan of the projectile to 3 seconds
-  InitialLifeSpan = 3.0f;
+  InitialLifeSpan = 2.0f;
 
 }
 
