@@ -18,6 +18,9 @@ public:
 	// Sets default values for this pawn's properties
 	virtual void Tick(float DeltaTime) override;
 
+	// Handle Destruction of the turret
+	void HandleDestruction();
+
 protected: 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

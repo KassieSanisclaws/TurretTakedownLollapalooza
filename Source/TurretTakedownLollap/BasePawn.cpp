@@ -57,6 +57,13 @@ void ABasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+// HandleDestroyed is called when the pawn is destroyed
+void ABasePawn::HandleDestruction()
+{
+	// TODO: Handle Pawnm visual sound effects here:
+}
+
+// Rotate the turret to face the target location
 void ABasePawn::RotateTurret(FVector LookAtTarget)
 {
 	FVector ToTarget = LookAtTarget - TurretRotationRoot->GetComponentLocation();
@@ -87,8 +94,10 @@ void ABasePawn::FireProjectile()
 	  // Set the projectile velocitry manually after spawning
 		Projectile->GetProjectileMovementComponent()->Velocity = ToTarget * Projectile->GetProjectileMovementComponent()->InitialSpeed;
 
-		UE_LOG(LogTemp, Warning, TEXT("Projectile spawned successfully at location: %s"), *ProjectileSpawnLocation.ToString());
+		/*UE_LOG(LogTemp, Warning, TEXT("Projectile spawned successfully at location: %s"), *ProjectileSpawnLocation.ToString());*/
 	}
+
+	Projectile->SetOwner(this); // Set the owner of the projectile to this pawn
 
 	// Visual debug
 	DrawDebugLine(

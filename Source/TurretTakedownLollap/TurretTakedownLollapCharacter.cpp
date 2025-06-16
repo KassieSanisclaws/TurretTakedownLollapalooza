@@ -100,3 +100,18 @@ void ATurretTakedownLollapCharacter::Look(const FInputActionValue& Value)
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
+
+void ATurretTakedownLollapCharacter::SetPlayerEnabledState(bool bPlayerEnabled)
+{
+  // Enable or disable the player input
+	if (bPlayerEnabled)
+	{
+      EnableInput(Cast<APlayerController>(GetController()));
+	}
+	else
+	{
+		DisableInput(Cast<APlayerController>(GetController()));
+	}
+
+	
+}

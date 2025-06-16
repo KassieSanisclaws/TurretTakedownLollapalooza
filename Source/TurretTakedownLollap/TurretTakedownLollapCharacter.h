@@ -67,5 +67,7 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	void SetPlayerEnabledState(bool bPlayerEnabled);
+
 };
 

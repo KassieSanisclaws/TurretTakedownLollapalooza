@@ -35,6 +35,8 @@ private:
 		FVector NormalImpulse, 
 		const FHitResult& Hit
 	);
+	UPROPERTY(EditAnywhere)
+	float DamageAmount = 20.f; // Amount of damage the projectile will deal.
 
 public:	
 	// Called every frame

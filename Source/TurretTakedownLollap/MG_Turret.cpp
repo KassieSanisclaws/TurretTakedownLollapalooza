@@ -30,6 +30,17 @@ void AMG_Turret::Tick(float DeltaTime)
 }
 
 
+void AMG_Turret::HandleDestruction() 
+{
+	Super::HandleDestruction();
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
+	/*SetActorEnableCollision(false);*/
+	// Handle the turret's destruction logic here, such as playing effects or sounds
+	Destroy();
+}
+
+
 void AMG_Turret::BeginPlay() 
 {
 	Super::BeginPlay();
@@ -39,12 +50,12 @@ void AMG_Turret::BeginPlay()
 	PlayerCharacter = Cast<ATurretTakedownLollapCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 	if (!PlayerCharacter)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Turret: Player character not found!"));
+		/*UE_LOG(LogTemp, Warning, TEXT("Turret: Player character not found!"));*/
 		return;
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Turret: Player character found!"));
+		/*UE_LOG(LogTemp, Warning, TEXT("Turret: Player character found!"));*/
 	}
 
 	// Initialize the turret's fire range
@@ -78,7 +89,7 @@ bool AMG_Turret::InFiringRange()
 	   float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
 	   if (Distance <= FireRange)
 	   {
-		   UE_LOG(LogTemp, Warning, TEXT("Turret: SpawnPoint Location + Player character in Range! Fired Bullet"));
+		   /*UE_LOG(LogTemp, Warning, TEXT("Turret: SpawnPoint Location + Player character in Range! Fired Bullet"));*/
 
 		   return true;
 	   }  
