@@ -103,6 +103,8 @@ void ABasePawn::FireProjectile()
 		UE_LOG(LogTemp, Warning, TEXT("Projectile spawned successfully at location: %s"), *ProjectileSpawnLocation.ToString());
 	}
 
+	Projectile->SetOwner(this); // Set the owner of the projectile to this pawn
+
 	// Visual debug
 	DrawDebugLine(
 		GetWorld(), 
