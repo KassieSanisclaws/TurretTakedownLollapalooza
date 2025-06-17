@@ -57,6 +57,14 @@ void ABasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+// HandleDestroyed is called when the pawn is destroyed
+void ABasePawn::HandleDestruction()
+{
+	// TODO: Handle Pawnm visual/sound effects here:
+
+	UE_LOG(LogTemp, Warning, TEXT("Base Pawn destroyed!"));
+}
+
 void ABasePawn::RotateTurret(FVector LookAtTarget)
 {
 	FVector ToTarget = LookAtTarget - TurretRotationRoot->GetComponentLocation();
@@ -75,6 +83,11 @@ void ABasePawn::FireProjectile()
 	FVector ProjectileSpawnLocation = ProjectileSpawnPointComp->GetComponentLocation();
    // Get the player character to aim at
 	ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);  
+	if (!PlayerCharacter || !ProjectileClass || !ProjectileSpawnPointComp)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed to fire projectile: PlayerCharacter or ProjectileClass is null!"));
+		return;
+	}
 
 	FVector TargetLoc = PlayerCharacter->GetActorLocation();
 	FVector ToTarget = (TargetLoc - ProjectileSpawnLocation).GetSafeNormal();
@@ -86,7 +99,7 @@ void ABasePawn::FireProjectile()
 	if(Projectile && Projectile->GetProjectileMovementComponent()) {
 	  // Set the projectile velocitry manually after spawning
 		Projectile->GetProjectileMovementComponent()->Velocity = ToTarget * Projectile->GetProjectileMovementComponent()->InitialSpeed;
-
+        Projectile->SetOwner(this); // Set the owner of the projectile to this pawn
 		UE_LOG(LogTemp, Warning, TEXT("Projectile spawned successfully at location: %s"), *ProjectileSpawnLocation.ToString());
 	}
 

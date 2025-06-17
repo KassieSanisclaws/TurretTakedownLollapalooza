@@ -4,6 +4,8 @@
 #include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "GameFramework/DamageType.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -41,7 +43,7 @@ void AProjectile::BeginPlay()
 	// Function Bond to the OnHit event of the projectile mesh
 	ProjectileMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 
-	UE_LOG(LogTemp, Warning, TEXT("Projectile velocity: %s"), *ProjectileMovementComponent->Velocity.ToString());
+	/*UE_LOG(LogTemp, Warning, TEXT("Projectile velocity: %s"), *ProjectileMovementComponent->Velocity.ToString());*/
 }
 
 // Called every frame
@@ -52,7 +54,26 @@ void AProjectile::Tick(float DeltaTime)
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	// Check if the hit component is valid
+	auto MyOwner = GetOwner();
+	// Check if the owner is valid
+	if (MyOwner == nullptr) return;
+	// Get the instigator controller from the owner of the projectile
+	auto MyOwnerInstigator = MyOwner->GetInstigatorController();
+
+	auto DamageTypeClass = UDamageType::StaticClass(); // Use the default damage type
+
+	if (OtherActor && OtherActor != this && OtherActor != MyOwner)
+	{
+		// Apply damage to the other actor
+		UGameplayStatics::ApplyDamage(OtherActor, DamageAmount, MyOwnerInstigator, this, DamageTypeClass);
+		Destroy(); // Destroy the projectile after hitting
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("OnHit"));
+	UE_LOG(LogTemp, Warning, TEXT("OnHit: %s"), *HitComp->GetName());
 	UE_LOG(LogTemp, Warning, TEXT("OnHit: %s"), *OtherActor->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("OnHit: %s"), *OtherComp->GetName());
 
 	DrawDebugSphere(
 		GetWorld(), 

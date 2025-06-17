@@ -29,6 +29,14 @@ void AMG_Turret::Tick(float DeltaTime)
 	}
 }
 
+void AMG_Turret::HandleDestruction()
+{
+	Super::HandleDestruction();
+	// Handle the destruction of the turret
+	UE_LOG(LogTemp, Warning, TEXT("Turret destroyed!"));
+	Destroy();
+}
+
 
 void AMG_Turret::BeginPlay() 
 {
@@ -78,7 +86,7 @@ bool AMG_Turret::InFiringRange()
 	   float Distance = FVector::Dist(GetActorLocation(), PlayerCharacter->GetActorLocation());
 	   if (Distance <= FireRange)
 	   {
-		   UE_LOG(LogTemp, Warning, TEXT("Turret: SpawnPoint Location + Player character in Range! Fired Bullet"));
+		   /*UE_LOG(LogTemp, Warning, TEXT("Turret: SpawnPoint Location + Player character in Range! Fired Bullet"));*/
 
 		   return true;
 	   }  

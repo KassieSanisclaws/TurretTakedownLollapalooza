@@ -13,6 +13,21 @@ class ATurretTakedownLollapGameMode : public AGameModeBase
 
 public:
 	ATurretTakedownLollapGameMode();
+
+	// Actor Character Dies and is removed from the game
+	void ActorDied(AActor* DeadActor);
+
+protected: 
+	virtual void BeginPlay() override; 
+    
+	UFUNCTION()
+	void HandleGameStart();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartGame();
+
+private:
+	class ATurretTakedownLollapPlayer* PlayerControllerRef;
 };
 
 

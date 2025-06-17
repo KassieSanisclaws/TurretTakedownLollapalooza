@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+//#include "HealthComponent.h"
 #include "TurretTakedownLollapCharacter.generated.h"
 
 class UInputComponent;
@@ -44,9 +45,14 @@ class ATurretTakedownLollapCharacter : public ACharacter
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	class UHealthComponent* HealthComponent;
 	
 public:
 	ATurretTakedownLollapCharacter();
+
+	void HandleDestruction();
 
 protected:
 	/** Called for movement input */
@@ -67,5 +73,7 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	void SetPlayerEnabledState(bool bPlayerEnabled);
+	
 };
 
