@@ -118,3 +118,19 @@ void ATurretTakedownLollapCharacter::SetPlayerEnabledState(bool bPlayerEnabled)
 
 	
 }
+
+void ATurretTakedownLollapCharacter::HandleDestruction()
+{
+	// Logic for destruction handling
+	UE_LOG(LogTemplateCharacter, Warning, TEXT("Player has been destroyed!"));
+
+	// Hide mesh and disable collision
+	GetMesh1P()->SetVisibility(false);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// Disable input
+	DisableInput(Cast<APlayerController>(GetController()));
+
+	// Destroy the actor
+	 Destroy();
+}

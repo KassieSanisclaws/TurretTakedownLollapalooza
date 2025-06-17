@@ -27,7 +27,7 @@ protected:
 	void StartGame();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void GameOver();
+	void GameOver(bool bWonGame);
 
 private:
 	class ATurretTakedownLollapPlayer* PlayerControllerRef;
