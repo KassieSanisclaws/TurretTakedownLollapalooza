@@ -29,15 +29,6 @@ void AMG_Turret::Tick(float DeltaTime)
 	}
 }
 
-void AMG_Turret::HandleDestruction()
-{
-	Super::HandleDestruction();
-	// Handle the destruction of the turret
-	UE_LOG(LogTemp, Warning, TEXT("Turret destroyed!"));
-	Destroy();
-}
-
-
 void AMG_Turret::HandleDestruction() 
 {
 	Super::HandleDestruction();
@@ -45,6 +36,7 @@ void AMG_Turret::HandleDestruction()
 	SetActorTickEnabled(false);
 	/*SetActorEnableCollision(false);*/
 	// Handle the turret's destruction logic here, such as playing effects or sounds
+	UE_LOG(LogTemp, Warning, TEXT("Turret destroyed!"));
 	Destroy();
 }
 
